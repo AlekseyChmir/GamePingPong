@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import random
 import time
 
@@ -70,6 +71,18 @@ class Paddle:  # создаём класс Ракетка
     def turn_right(self, evt):  # Создаём функцию для привязки к нажатию клавиши-стрелки "вправо"
         self.x = 2
 
+# def start():
+    # StartButton = Button(tk)  # Кнопка для начала игры
+    # StartButton["text"] = "Начало игры"
+    # StartButton.bind("<Button-1>")
+    # StartButton.pack()
+
+# def exit():
+    # ExitButton = Button(tk)  # Кнопка для конца игры
+    # ExitButton["text"] = "Конец игры"
+    # ExitButton.bind("<Button-1>")
+    # ExitButton.pack()
+
 
 tk = Tk()
 tk.title("Game Ping-Pong")  # заголовок игрового окна
@@ -78,9 +91,16 @@ tk.wm_attributes("-topmost", 1)  # размещает холст поверх в
 canvas = Canvas(tk, width=500, height=400, bd=0, highlightthickness=0)  # задаём размеры холста
 canvas.pack()  # при вызове функции холст принимает параметры выше
 tk.update()  # подготавливает tkinter к игровой анимации
+canvas.focus_set()  # Установим фокус на Canvas чтобы он реагировал на нажатия клавиш
 
-paddle = Paddle(canvas, "blue")  # создаём объект Ракетка синего цвета
-ball = Ball(canvas, paddle, "red")  # создаём обЪект Мяч красного цвета
+def closing_windom():  # Функция отвечающая за выход из игры и закрытие окна
+    if messagebox.askokcancel("Выход", "Вы действительно хотите выйти?"):
+        tk.destroy()
+
+tk.protocol("WM_DELETE_WINDOW", closing_windom)  # Обращаемся к функции закрытия окна
+
+paddle = Paddle(canvas, "green")  # создаём объект Ракетка синего цвета
+ball = Ball(canvas, paddle, "purple")  # создаём обЪект Мяч красного цвета
 
 while 1:  # бесконечный цикл, пока не закроем окно
     if ball.hit_bottom == False:  # проверяем не достиг ли мяч нижней границы холста
@@ -89,3 +109,6 @@ while 1:  # бесконечный цикл, пока не закроем окн
     tk.update_idletasks()  # перерисовывает экран
     tk.update()  # подготавливает tkinter к игровой анимации
     time.sleep(0.01)  # делает паузу на одну сотую секунды
+
+
+
